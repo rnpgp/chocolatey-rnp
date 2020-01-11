@@ -3,15 +3,13 @@ $ErrorActionPreference = 'Stop';
 $osBitness = Get-ProcessorBits
 Write-Host "Detected osBitness=$osBitness"
 
-# $toolsDir        = Split-Path -Parent $MyInvocation.MyCommand.Definition
-# $packageDir      = Join-Path $toolsDir ".."
-
 # Include the Chocolatey compatibility scripts if available
-$thisScript = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$compatScript = $thisScript +  '.\ChocolateyCompat.ps1'
+$toolsDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$compatScript = $toolsDir +  '.\ChocolateyCompat.ps1'
 if (Test-Path $compatScript) {
     . ($compatScript)
 }
+# $packageDir      = Join-Path $toolsDir ".."
 
 # MSYS2 zips contain a root dir named msys32 or msys64
 # $msysName = '.' #shorten the path by exporting to the same folder
@@ -105,8 +103,8 @@ rebase
 execute "Installing Dependencies" `
         "pacman --noconfirm -S --needed bzip2 gzip mingw-w64-`$(uname -m)-json-c mingw-w64-`$(uname -m)-libbotan"
 
-Write-Output "Adding DLL path $dllPath"
-Install-ChocolateyPath -PathToInstall $dllPath
+# Install-ChocolateyPath -PathToInstall $dllPath
+Copy-Item "$dllPath\*.dll" $toolsDir -Force
 
 Write-Output "***********************************************************************************************"
 Write-Output "*"
