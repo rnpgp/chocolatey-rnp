@@ -50,8 +50,8 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <!-- <releaseNotes>__REPLACE_OR_REMOVE__MarkDown_Okay</releaseNotes> -->
     <!-- =============================== -->      
     <dependencies>
-      <dependency id="mingw" version="8.1.0" />
-      <dependency id="msys2" version="20190524.0.0.20191030" />
+      <dependency id="mingw" version="[8.1.0]" />
+      <dependency id="msys2" version="[20190524.0.0.20191030]" />
     </dependencies>
     <!--<provides>NOT YET IMPLEMENTED</provides>-->
     <!--<conflicts>NOT YET IMPLEMENTED</conflicts>-->
