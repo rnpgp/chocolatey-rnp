@@ -14,7 +14,7 @@ env:
   CORES: 2
 
 jobs:
-  tests:
+  build:
     runs-on: windows-latest
     timeout-minutes: 50
     steps:
@@ -22,9 +22,9 @@ jobs:
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
       - name: Determine version to build
-        run: powershell.exe -ExecutionPolicy Bypass -File 'ci/version.ps1'
+        run: powershell.exe -ExecutionPolicy Bypass -File ${env:GITHUB_WORKSPACE}/ci/version.ps1
       - name: Check out RNP
-        run: git clone --branch v${VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${HOME}/rnpsrc
+        run: git clone --branch v${env:VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${env:HOME}/rnpsrc
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
