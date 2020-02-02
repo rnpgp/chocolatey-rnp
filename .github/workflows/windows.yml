@@ -1,0 +1,37 @@
+name: windows
+
+on:
+  pull_request:
+  push:
+    branches:
+      - rrrooommmaaa-7-gha
+      - master
+      - 'release/**'
+
+env:
+  BUILD_MODE: normal
+  GPG_VERSION: stable
+  CORES: 2
+
+jobs:
+  tests:
+    runs-on: windows-latest
+    timeout-minutes: 50
+    steps:
+      - name: Disable git eol translation
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v1
+      - name: Add MSYS2 path
+        uses: MSP-Greg/msys2-action/add_paths@master
+      - name: Update MSYS2
+        run: pacman-key --init
+      - name: Update pacman-key
+        run: pacman-key --update
+      - name: Upgrade pacman
+        run: pacman -Syu --noconfirm --noprogressbar --needed
+      - name: Finish MSYS2 update
+        run: pacman.exe -Syu --noconfirm --noprogressbar --needed
+      - name: install
+        run: bash.exe ci/before_install.sh
+      - name: tests
+        run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
