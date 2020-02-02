@@ -22,9 +22,7 @@ jobs:
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
       - name: Check out RNP
-        run: |
-          powershell.exe -ExecutionPolicy Bypass -File ${env:GITHUB_WORKSPACE}/ci/version.ps1
-          git clone --branch v${env:VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${env:HOME}/rnpsrc
+        run: bash.exe ci/checkout.sh
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
