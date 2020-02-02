@@ -11,13 +11,12 @@ cmakeopts=(
 )
 
 mkdir -p "${LOCAL_BUILDS}/rnp-build"
-rnpsrc="$HOME/rnpsrc"
 pushd "${LOCAL_BUILDS}/rnp-build"
 
 # update dll search path for windows
 export PATH="${LOCAL_BUILDS}/rnp-build/lib:${LOCAL_BUILDS}/rnp-build/bin:${LOCAL_BUILDS}/rnp-build/src/lib:$PATH"
 
-${CMAKE} "${cmakeopts[@]}" "$rnpsrc"
+${CMAKE} "${cmakeopts[@]}" "$RNPSRC"
 make -j${MAKE_PARALLEL} VERBOSE=1 install
 
 popd

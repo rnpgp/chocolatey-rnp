@@ -22,7 +22,7 @@ jobs:
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
       - name: Check out RNP
-        run: bash.exe ci/checkout.sh
+        run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
