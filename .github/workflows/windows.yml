@@ -21,6 +21,10 @@ jobs:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
+      - name: Determine version to build
+        run: powershell.exe -ExecutionPolicy Bypass -File 'ci/version.ps1'
+      - name: Check out RNP
+        run: git clone --branch v${VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${HOME}/rnpsrc
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
@@ -31,7 +35,7 @@ jobs:
         run: pacman -Syu --noconfirm --noprogressbar --needed
       - name: Finish MSYS2 update
         run: pacman.exe -Syu --noconfirm --noprogressbar --needed
-      - name: install
+      - name: msys_install
         run: bash.exe ci/before_install.sh
-      - name: tests
+      - name: build
         run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
