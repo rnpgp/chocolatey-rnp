@@ -12,6 +12,7 @@ for var in LOCAL_BUILDS LOCAL_INSTALLS BOTAN_INSTALL JSONC_INSTALL \
   GPG_INSTALL RNP_INSTALL RUBY_RNP_INSTALL RUBY_RNP_VERSION \
   VERSION_OVERRIDE_BRANCH RNPSRC; do
   export "${var?}"
+  echo "Exported ${var?}=${!var}"
 done
 
 if [ "$BUILD_MODE" = "sanitize" ]; then
