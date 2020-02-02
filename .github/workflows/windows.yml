@@ -21,10 +21,10 @@ jobs:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
-      - name: Determine version to build
-        run: powershell.exe -ExecutionPolicy Bypass -File ${env:GITHUB_WORKSPACE}/ci/version.ps1
       - name: Check out RNP
-        run: git clone --branch v${env:VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${env:HOME}/rnpsrc
+        run: |
+          powershell.exe -ExecutionPolicy Bypass -File ${env:GITHUB_WORKSPACE}/ci/version.ps1
+          git clone --branch v${env:VERSION} --depth 1 https://github.com/rnpgp/rnp.git ${env:HOME}/rnpsrc
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
