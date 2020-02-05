@@ -21,8 +21,6 @@ jobs:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
-      - name: Check out RNP
-        run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
       - name: Add MSYS2 path
         uses: MSP-Greg/msys2-action/add_paths@master
       - name: Update MSYS2
@@ -35,5 +33,7 @@ jobs:
         run: pacman.exe -Syu --noconfirm --noprogressbar --needed
       - name: msys_install
         run: bash.exe ci/before_install.sh
+      - name: Check out RNP
+        run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
       - name: build
         run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
