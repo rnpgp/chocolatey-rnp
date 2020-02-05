@@ -21,11 +21,6 @@ msys_install() {
     mingw64/mingw-w64-x86_64-python2
   "
   pacman --noconfirm -S --needed ${packages}
-
-  # msys includes ruby 2.6.1 while we need lower version
-  #wget http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-ruby-2.5.3-1-any.pkg.tar.xz -O /tmp/ruby-2.5.3.pkg.tar.xz
-  #pacman --noconfirm --needed -U /tmp/ruby-2.5.3.pkg.tar.xz
-  #rm /tmp/ruby-2.5.3.pkg.tar.xz
 }
 
 msys_install
