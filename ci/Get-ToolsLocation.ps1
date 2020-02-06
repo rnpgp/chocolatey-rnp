@@ -46,7 +46,7 @@ None
 #>
 
   $invocation = $MyInvocation
-  Write-FunctionCallLogMessage -Invocation $invocation -Parameters $PSBoundParameters
+  # Write-FunctionCallLogMessage -Invocation $invocation -Parameters $PSBoundParameters
 
   if ($invocation -ne $null -and $invocation.InvocationName -ne $null -and $invocation.InvocationName.ToLower() -eq 'get-binroot') {
     Write-Host "Get-BinRoot is going to be deprecated in v1 and removed in v2. It has been replaced with Get-ToolsLocation (starting with v0.9.10), however many packages no longer require a special separate directory since package folders no longer have versions on them. Some do though and should continue to use Get-ToolsLocation."
@@ -76,19 +76,6 @@ None
   # Add a drive letter if one doesn't exist
   if (-not($toolsLocation -imatch "^\w:")) {
     $toolsLocation = Join-Path $env:systemdrive $toolsLocation
-  }
-
-  if (-not($env:ChocolateyToolsLocation -eq $toolsLocation)) {
-    try {
-      Set-EnvironmentVariable -Name "ChocolateyToolsLocation" -Value $toolsLocation -Scope User
-    } catch {
-      if (Test-ProcessAdminRights) {
-        # sometimes User scope may not exist (such as with core)
-        Set-EnvironmentVariable -Name "ChocolateyToolsLocation" -Value $toolsLocation -Scope Machine
-      } else {
-        throw $_.Exception
-      }
-    }
   }
 
   return $toolsLocation

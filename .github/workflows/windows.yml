@@ -21,14 +21,17 @@ jobs:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v1
+      - name: Prepare MSYS2 Selector
+        run: npm install ci/msys2_selector
       - name: Install MSYS2
-        run: |
-          choco.exe install MSYS2 --confirm --version 20190524.0.0.20191030
-          powershell.exe -ExecutionPolicy Bypass -File ci/Get-ToolsLocation.ps1
-          echo ChocolateyToolsLocation=%ChocolateyToolsLocation%
-      - name: msys_install
+        run: choco.exe install MSYS2 --confirm --version 20190524.0.0.20191030
+      - name: Select MSYS2 64-bit
+        run: node ci/msys2_selector 64
+      - name: MSYS dependencies install
         run: bash.exe ci/before_install.sh
       - name: Check out RNP
         run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
-      - name: build
+      - name: Build 64-bit
         run: bash.exe -c ". ci/main.sh"
+      - name: Create Chocolatey package
+        run: choco.exe pack rnp
