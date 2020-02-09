@@ -33,13 +33,22 @@ jobs:
         run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
       - name: Build 64-bit
         env:
-          RNP_INSTALL: "${GITHUB_WORKSPACE}/rnp/tools/64"
-        run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          BITNESS: 64
+        run: |
+          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          mkdir rnp/tools/64
+          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
       - name: Select MSYS2 32-bit
         run: node ci/msys2_selector 32
       - name: Build 32-bit
         env:
-          RNP_INSTALL: "${GITHUB_WORKSPACE}/rnp/tools/32"
-        run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          BITNESS: 32
+        run: |
+          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          mkdir rnp/tools/32
+          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
       - name: Create Chocolatey package
-        run: choco.exe pack rnp
+        run: |
+          dir rnp/tools/64
+          dir rnp/tools/32
+          choco.exe pack rnp/rnp.nuspec

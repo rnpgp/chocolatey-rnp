@@ -3,10 +3,11 @@
 : "${BOTAN_INSTALL:=$LOCAL_INSTALLS/botan-install}"
 : "${JSONC_INSTALL:=$LOCAL_INSTALLS/jsonc-install}"
 : "${GPG_INSTALL:=$LOCAL_INSTALLS/gpg-install}"
-: "${RNP_INSTALL:=$LOCAL_INSTALLS/rnp-install}"
+: "${RNP_INSTALL:=$LOCAL_INSTALLS/rnp-install-$BITNESS}"
+: "${RNP_BUILD:=$LOCAL_BUILDS/rnp-build-$BITNESS}"
 : "${RNPSRC:=$HOME/rnpsrc}"
 for var in LOCAL_BUILDS LOCAL_INSTALLS BOTAN_INSTALL JSONC_INSTALL \
-  GPG_INSTALL RNP_INSTALL \
+  GPG_INSTALL RNP_BUILD RNP_INSTALL \
   RNPSRC; do
   export "${var?}"
   echo "Exported ${var?}=${!var}"

@@ -10,11 +10,11 @@ cmakeopts=(
   "-G" "MSYS Makefiles"
 )
 
-mkdir -p "${LOCAL_BUILDS}/rnp-build"
-pushd "${LOCAL_BUILDS}/rnp-build"
+mkdir -p "${RNP_BUILD}"
+pushd "${RNP_BUILD}"
 
 # update dll search path for windows
-export PATH="${LOCAL_BUILDS}/rnp-build/lib:${LOCAL_BUILDS}/rnp-build/bin:${LOCAL_BUILDS}/rnp-build/src/lib:$PATH"
+export PATH="${RNP_BUILD}/lib:${RNP_BUILD}/bin:${RNP_BUILD}/src/lib:$PATH"
 
 ${CMAKE} "${cmakeopts[@]}" "$RNPSRC"
 make -j${MAKE_PARALLEL} VERBOSE=1 install

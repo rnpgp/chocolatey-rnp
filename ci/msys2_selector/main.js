@@ -12,6 +12,9 @@ function run(bitness) {
 
       const topDir = process.env['SystemDrive'] + "/tools/msys64";
 
+      core.exportVariable('MSYS2', topDir);
+      console.log(`New MSYS2=${topDir}`);
+
       const usrBinPath = `${topDir.replace(/\//g, "\\")}\\usr\\bin`;
       core.addPath(usrBinPath);
       console.log(`Added path ${usrBinPath}`);
