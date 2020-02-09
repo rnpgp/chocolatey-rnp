@@ -32,6 +32,14 @@ jobs:
       - name: Check out RNP
         run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
       - name: Build 64-bit
-        run: bash.exe -c ". ci/main.sh"
+        env:
+          RNP_INSTALL: "${GITHUB_WORKSPACE}/rnp/tools/64"
+        run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+      - name: Select MSYS2 32-bit
+        run: node ci/msys2_selector 32
+      - name: Build 32-bit
+        env:
+          RNP_INSTALL: "${GITHUB_WORKSPACE}/rnp/tools/32"
+        run: bash.exe -c ". ci/env.inc.sh && ci/main.sh"
       - name: Create Chocolatey package
         run: choco.exe pack rnp
