@@ -106,6 +106,9 @@ execute "Installing Dependencies" `
 # Install-ChocolateyPath -PathToInstall $dllPath
 Copy-Item "$dllPath\*.dll" $toolsDir -Force
 
+# Copy RNP EXE files
+Copy-Item "$toolsDir\$osBitness\*.exe" $toolsDir -Force
+
 Write-Output "***********************************************************************************************"
 Write-Output "*"
 Write-Output "*  Please restart powershell "

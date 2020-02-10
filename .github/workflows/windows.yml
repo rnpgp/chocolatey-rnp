@@ -1,0 +1,53 @@
+name: windows
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+env:
+  BUILD_MODE: normal
+  GPG_VERSION: stable
+  CORES: 2
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 50
+    steps:
+      - name: Disable git eol translation
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v1
+      - name: Prepare MSYS2 Selector
+        run: npm install ci/msys2_selector
+      - name: Install MSYS2
+        run: choco.exe install MSYS2 --confirm --version 20190524.0.0.20191030
+      - name: Select MSYS2 64-bit
+        run: node ci/msys2_selector 64
+      - name: MSYS dependencies install
+        run: bash.exe ci/before_install.sh
+      - name: Check out RNP
+        run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
+      - name: Build 64-bit
+        env:
+          BITNESS: 64
+        run: |
+          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          mkdir rnp/tools/64
+          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
+      - name: Select MSYS2 32-bit
+        run: node ci/msys2_selector 32
+      - name: Build 32-bit
+        env:
+          BITNESS: 32
+        run: |
+          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
+          mkdir rnp/tools/32
+          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
+      - name: Create Chocolatey package
+        run: |
+          dir rnp/tools/64
+          dir rnp/tools/32
+          choco.exe pack rnp/rnp.nuspec
