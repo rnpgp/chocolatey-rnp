@@ -109,6 +109,10 @@ Copy-Item "$dllPath\*.dll" $toolsDir -Force
 # Copy RNP EXE files
 Copy-Item "$toolsDir\$osBitness\*.exe" $toolsDir -Force
 
+Remove-Item "$toolsDir\32" -Recurse
+
+Remove-Item "$toolsDir\64" -Recurse
+
 Write-Output "***********************************************************************************************"
 Write-Output "*"
 Write-Output "*  Please restart powershell "

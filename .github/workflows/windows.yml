@@ -57,3 +57,13 @@ jobs:
         with:
           name: nupkg
           path: output
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: binaries-64
+          path: rnp/tools/64
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: binaries-32
+          path: rnp/tools/32
