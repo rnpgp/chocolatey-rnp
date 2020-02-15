@@ -100,8 +100,11 @@ execute "Upgrading full system twice" `
         "pacman --noconfirm -Su"
 
 rebase
+
+$lines = Get-Content -Path "$toolsDir\$osBitness\packages.txt" | ForEach-Object {$_ -Replace ' ', '='}
+$line = $lines -join " "
 execute "Installing Dependencies" `
-        "pacman --noconfirm -S --needed bzip2 gzip mingw-w64-`$(uname -m)-json-c mingw-w64-`$(uname -m)-libbotan"
+        "pacman --noconfirm -S --needed $line"
 
 # Install-ChocolateyPath -PathToInstall $dllPath
 Copy-Item "$dllPath\*.dll" $toolsDir -Force

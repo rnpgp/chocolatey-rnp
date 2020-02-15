@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - 'release/**'
+      - rrrooommmaaa-package-versioning
 
 env:
   BUILD_MODE: normal
@@ -27,6 +28,8 @@ jobs:
       - name: Select MSYS2 64-bit
         run: node ci/msys2_selector 64
       - name: MSYS dependencies install
+        env:
+          MINGW_64_PREFIX: mingw-w64-x86_64
         run: bash.exe ci/before_install.sh
       - name: Check out RNP
         run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
@@ -39,6 +42,10 @@ jobs:
           bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
       - name: Select MSYS2 32-bit
         run: node ci/msys2_selector 32
+      - name: MSYS dependencies install
+        env:
+          MINGW_64_PREFIX: mingw-w64-i686
+        run: bash.exe ci/before_install.sh
       - name: Build 32-bit
         env:
           BITNESS: 32
