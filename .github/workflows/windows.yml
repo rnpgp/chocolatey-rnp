@@ -6,7 +6,6 @@ on:
     branches:
       - master
       - 'release/**'
-      - rrrooommmaaa-package-versioning
 
 env:
   BUILD_MODE: normal
