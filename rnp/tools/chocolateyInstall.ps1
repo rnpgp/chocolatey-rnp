@@ -73,6 +73,27 @@ function rebase {
     }
 }
 
+function upgrade {
+    execute "Update pacman package DB" `
+    "pacman -Syy"
+
+    execute "Updating system packages" `
+        "pacman --noconfirm --needed -Sy bash pacman pacman-mirrors msys2-runtime"
+    rebase
+    execute "Upgrading full system" `
+        "pacman --noconfirm -Su"
+
+    # It seems some parts of the system have to be update for others to be updateable. So just run this twice.
+    execute "Upgrading full system twice" `
+        "pacman --noconfirm -Su"
+
+    rebase
+}
+
+function isMainPackage($param) {
+    return $param -Match "(json-c|libbz2-devel|libbotan|zlib-devel) "
+}
+
 # Initialize and upgrade MSYS2 according to https://msys2.github.io
 Write-Host "Initializing MSYS2..."
 
@@ -86,22 +107,9 @@ execute "Setting default MSYSTEM" `
         ('echo "export MSYSTEM=' + ("MINGW" + $osBitness) + '" >>~/.bash_profile')
 
 # Now perform commands to set up MSYS2
-execute "Update pacman package DB" `
-        "pacman -Syy"
+# upgrade
 
-execute "Updating system packages" `
-        "pacman --noconfirm --needed -Sy bash pacman pacman-mirrors msys2-runtime"
-rebase
-execute "Upgrading full system" `
-        "pacman --noconfirm -Su"
-
-# It seems some parts of the system have to be update for others to be updateable. So just run this twice.
-execute "Upgrading full system twice" `
-        "pacman --noconfirm -Su"
-
-rebase
-
-$lines = Get-Content -Path "$toolsDir\$osBitness\packages.txt" | ForEach-Object {$_ -Replace ' ', '='}
+$lines = Get-Content -Path "$toolsDir\$osBitness\packages.txt" | Where-Object {isMainPackage($_)} | ForEach-Object {$_ -Replace ' ', '='}
 $line = $lines -join " "
 execute "Installing Dependencies" `
         "pacman --noconfirm -S --needed $line"
