@@ -14,11 +14,11 @@ msys_install() {
     gnupg2
     make
     pkgconfig
-    mingw64/$MINGW_64_PREFIX-cmake
-    mingw64/$MINGW_64_PREFIX-gcc
-    mingw64/$MINGW_64_PREFIX-json-c
-    mingw64/$MINGW_64_PREFIX-libbotan
-    mingw64/$MINGW_64_PREFIX-python2
+    $MINGW_64_PREFIX-cmake
+    $MINGW_64_PREFIX-gcc
+    $MINGW_64_PREFIX-json-c
+    $MINGW_64_PREFIX-libbotan
+    $MINGW_64_PREFIX-python2
   "
   pacman --noconfirm -S --needed ${packages}
 }
