@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - 'release/**'
+      - rrrooommmaaa-6-publish
 
 env:
   BUILD_MODE: normal
@@ -73,3 +74,7 @@ jobs:
         with:
           name: binaries-32
           path: rnp/tools/32
+      - name: Push to chocolatey.org
+        run: |
+          choco.exe apikey --key "${{ secrets.CHOCOLATEY_API_KEY }}" --source https://push.chocolatey.org/
+          bash.exe -c ". ci/push.sh"
