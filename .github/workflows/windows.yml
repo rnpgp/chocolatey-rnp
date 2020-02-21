@@ -6,7 +6,6 @@ on:
     branches:
       - master
       - 'release/**'
-      - rrrooommmaaa-6-publish
 
 env:
   BUILD_MODE: normal
