@@ -1,0 +1,17 @@
+= RNP Chocolatey package
+
+image:https://github.com/rnpgp/chocolatey-rnp/workflows/windows/badge.svg["Build Status", link="https://github.com/metanorma/mn-samples-iso/actions?workflow=windows"]
+
+== Introduction
+
+This repository contains the automated build scripts for releasing `rnp`
+on Chocolatey for Windows.
+
+The Chocolatey site for `rnp` is found here:
+
+* https://chocolatey.org/packages/rnp
+
+
+== Copyright
+
+Copyright Ribose Inc.
