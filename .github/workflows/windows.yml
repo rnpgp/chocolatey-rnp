@@ -17,66 +17,121 @@ jobs:
   build:
     runs-on: windows-latest
     timeout-minutes: 50
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
+        shell: pwsh
+
       - uses: actions/checkout@v4
+
       - name: Install MSYS2 64-bit
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
           update: true
-      - name: MSYS dependencies install
-        env:
-          MINGW_64_PREFIX: mingw-w64-x86_64
-        run: bash.exe ci/before_install.sh
+          install: >-
+            tar
+            zlib-devel
+            libbz2-devel
+            git
+            automake
+            autoconf
+            libtool
+            automake-wrapper
+            gnupg2
+            make
+            pkgconfig
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-json-c
+            mingw-w64-x86_64-libbotan
+            mingw-w64-x86_64-python
+
       - name: Check out RNP
-        run: bash.exe -c ". ci/env.inc.sh && ci/checkout.sh"
+        env:
+          BITNESS: 64
+          MINGW_64_PREFIX: mingw-w64-x86_64
+        run: . ci/env.inc.sh && ci/checkout.sh
+
       - name: Build 64-bit
         env:
           BITNESS: 64
+          MINGW_64_PREFIX: mingw-w64-x86_64
         run: |
-          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
-          mkdir rnp/tools/64
-          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
+          . ci/env.inc.sh && ci/main.sh
+          mkdir -p rnp/tools/64
+          . ci/env.inc.sh && ci/copy.sh
+
       - name: Install MSYS2 32-bit
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW32
           update: true
-      - name: MSYS dependencies install
+          install: >-
+            tar
+            zlib-devel
+            libbz2-devel
+            git
+            automake
+            autoconf
+            libtool
+            automake-wrapper
+            gnupg2
+            make
+            pkgconfig
+            mingw-w64-i686-cmake
+            mingw-w64-i686-gcc
+            mingw-w64-i686-json-c
+            mingw-w64-i686-libbotan
+            mingw-w64-i686-python
+
+      - name: Check out RNP 32-bit
         env:
+          BITNESS: 32
           MINGW_64_PREFIX: mingw-w64-i686
-        run: bash.exe ci/before_install.sh
+        run: . ci/env.inc.sh && ci/checkout.sh
+
       - name: Build 32-bit
         env:
           BITNESS: 32
+          MINGW_64_PREFIX: mingw-w64-i686
         run: |
-          bash.exe -c ". ci/env.inc.sh && ci/main.sh"
-          mkdir rnp/tools/32
-          bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
+          . ci/env.inc.sh && ci/main.sh
+          mkdir -p rnp/tools/32
+          . ci/env.inc.sh && ci/copy.sh
+
       - name: Create Chocolatey package
+        shell: pwsh
         run: |
           dir rnp/tools/64
           dir rnp/tools/32
           mkdir output
           choco.exe pack rnp/rnp.nuspec --outdir output
+
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
           path: output
+
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
         with:
           name: binaries-64
           path: rnp/tools/64
+
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
         with:
           name: binaries-32
           path: rnp/tools/32
+
       - name: Push to chocolatey.org
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        shell: pwsh
         run: |
           choco.exe apikey --key "${{ secrets.CHOCOLATEY_API_KEY }}" --source https://push.chocolatey.org/
-          bash.exe -c ". ci/push.sh"
+          msys2 -c ". ci/push.sh"
