@@ -85,7 +85,7 @@ jobs:
             mingw-w64-i686-cmake
             mingw-w64-i686-gcc
             mingw-w64-i686-json-c
-            mingw-w64-i686-libbotan
+            mingw-w64-i686-openssl
             mingw-w64-i686-python
 
       - name: Check out RNP 32-bit
@@ -98,6 +98,7 @@ jobs:
         env:
           BITNESS: 32
           MINGW_64_PREFIX: mingw-w64-i686
+          CRYPTO_BACKEND: openssl
         run: |
           . ci/env.inc.sh && ci/main.sh
           mkdir -p rnp/tools/32
