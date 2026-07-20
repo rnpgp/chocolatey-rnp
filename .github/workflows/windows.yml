@@ -11,6 +11,7 @@ env:
   BUILD_MODE: normal
   GPG_VERSION: stable
   CORES: 2
+  MSYS2: C:/msys64
 
 jobs:
   build:
@@ -20,12 +21,11 @@ jobs:
       - name: Disable git eol translation
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
-      - name: Prepare MSYS2 Selector
-        run: npm install ci/msys2_selector
-      - name: Install MSYS2
-        run: choco.exe install msys2 --confirm
-      - name: Select MSYS2 64-bit
-        run: node ci/msys2_selector 64
+      - name: Install MSYS2 64-bit
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
       - name: MSYS dependencies install
         env:
           MINGW_64_PREFIX: mingw-w64-x86_64
@@ -39,8 +39,11 @@ jobs:
           bash.exe -c ". ci/env.inc.sh && ci/main.sh"
           mkdir rnp/tools/64
           bash.exe -c ". ci/env.inc.sh && ci/copy.sh"
-      - name: Select MSYS2 32-bit
-        run: node ci/msys2_selector 32
+      - name: Install MSYS2 32-bit
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW32
+          update: true
       - name: MSYS dependencies install
         env:
           MINGW_64_PREFIX: mingw-w64-i686
