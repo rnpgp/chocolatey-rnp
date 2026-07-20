@@ -6,6 +6,7 @@ CMAKE=cmake
 cmakeopts=(
   "-DCMAKE_BUILD_TYPE=Release"
   "-DBUILD_SHARED_LIBS=no"
+  "-DCRYPTO_BACKEND=${CRYPTO_BACKEND:-botan}"
   "-DCMAKE_INSTALL_PREFIX=${RNP_INSTALL}"
   "-G" "MSYS Makefiles"
 )
