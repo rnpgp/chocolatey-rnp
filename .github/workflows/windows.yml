@@ -43,7 +43,7 @@ jobs:
             automake-wrapper
             gnupg2
             make
-            pkgconfig
+            pkgconf
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-json-c
@@ -81,7 +81,7 @@ jobs:
             automake-wrapper
             gnupg2
             make
-            pkgconfig
+            pkgconf
             mingw-w64-i686-cmake
             mingw-w64-i686-gcc
             mingw-w64-i686-json-c

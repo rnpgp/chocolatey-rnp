@@ -13,7 +13,7 @@ msys_install() {
     automake-wrapper
     gnupg2
     make
-    pkgconfig
+    pkgconf
     $MINGW_64_PREFIX-cmake
     $MINGW_64_PREFIX-gcc
     $MINGW_64_PREFIX-json-c
