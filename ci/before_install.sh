@@ -18,7 +18,7 @@ msys_install() {
     $MINGW_64_PREFIX-gcc
     $MINGW_64_PREFIX-json-c
     $MINGW_64_PREFIX-libbotan
-    $MINGW_64_PREFIX-python2
+    $MINGW_64_PREFIX-python
   "
   pacman --noconfirm -S --needed ${packages}
 }
