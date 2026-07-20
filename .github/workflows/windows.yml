@@ -126,4 +126,6 @@ jobs:
         shell: pwsh
         run: |
           choco.exe apikey --key "${{ secrets.CHOCOLATEY_API_KEY }}" --source https://push.chocolatey.org/
-          msys2 -c ". ci/push.sh"
+          Get-ChildItem output/*.nupkg | ForEach-Object {
+            choco.exe push $_.FullName --source https://push.chocolatey.org/
+          }
