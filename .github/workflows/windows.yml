@@ -69,12 +69,12 @@ jobs:
         env:
           MSYSTEM: MINGW32
         run: |
-          pacboy -S --needed --noconfirm \
-            mingw-w64-i686-cmake:i \
-            mingw-w64-i686-gcc:i \
-            mingw-w64-i686-json-c:i \
-            mingw-w64-i686-openssl:i \
-            mingw-w64-i686-python:i
+          pacman -S --needed --noconfirm \
+            mingw-w64-i686-cmake \
+            mingw-w64-i686-gcc \
+            mingw-w64-i686-json-c \
+            mingw-w64-i686-openssl \
+            mingw-w64-i686-python
 
       - name: Check out RNP 32-bit
         env:
