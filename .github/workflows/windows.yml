@@ -122,7 +122,7 @@ jobs:
           path: rnp/tools/32
 
       - name: Push to chocolatey.org
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         shell: pwsh
         run: |
           choco.exe apikey --key "${{ secrets.CHOCOLATEY_API_KEY }}" --source https://push.chocolatey.org/
